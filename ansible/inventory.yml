@@ -1,0 +1,22 @@
+all:
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/vk_project
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o ConnectTimeout=30'
+  children:
+    haproxy:
+      hosts:
+        haproxy-leskina:
+          ansible_host: 89.208.208.28
+          ansible_user: ubuntu
+    app_servers:
+      hosts:
+        app-server-1-leskina:
+          ansible_host: 89.208.211.12
+          ansible_user: ubuntu
+        app-server-2-leskina:
+          ansible_host: 89.208.198.80
+          ansible_user: ubuntu
+    database:
+      hosts:
+        mysql-db:
+          ansible_host: 87.239.109.143

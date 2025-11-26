@@ -1,0 +1,26 @@
+- name: Apply hardening configuration to HAProxy and App servers
+  hosts: haproxy,app_servers
+  become: yes
+  roles:
+    - hardening
+
+- name: Configure application servers
+  hosts: app_servers
+  become: yes
+  vars:
+    db_host: "192.168.200.9"
+    db_name: "leskina_test_database" 
+    db_user: "appuser"
+  roles:
+    - app_servers
+
+- name: Configure HAProxy load balancer
+  hosts: haproxy
+  become: yes
+  vars:
+    backend_servers:
+      - "192.168.100.20:8080"
+      - "192.168.100.21:8080"
+  roles:
+    - haproxy
+

@@ -1,0 +1,30 @@
+import os
+
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key'
+    MYSQL_HOST = '{{ db_host }}'
+    MYSQL_DATABASE = '{{ db_name }}'
+    MYSQL_USER = '{{ db_user }}'
+    MYSQL_PASSWORD = '{{ db_password }}'
+EOF
+
+# Создаем app.service.j2
+cat > roles/app_servers/templates/app.service.j2 << 'EOF'
+[Unit]
+Description=Flask Web Application
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/app
+Environment=PATH=/usr/bin
+Environment=MYSQL_HOST={{ db_host }}
+Environment=MYSQL_DATABASE={{ db_name }}
+Environment=MYSQL_USER={{ db_user }}
+Environment=MYSQL_PASSWORD={{ db_password }}
+ExecStart=/usr/bin/python3 app.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
