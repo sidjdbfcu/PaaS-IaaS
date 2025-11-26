@@ -45,7 +45,7 @@
     - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
     - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin no' }
     - { regexp: '^#?PubkeyAuthentication', line: 'PubkeyAuthentication yes' }
-  #notify: restart ssh
+
 
 - name: Configure fail2ban for SSH
   copy:
@@ -58,4 +58,3 @@
       logpath = /var/log/auth.log
       maxretry = 3
       bantime = 3600
-  #notify: restart fail2ban
